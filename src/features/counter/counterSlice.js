@@ -19,7 +19,7 @@ export const incrementAsync = createAsyncThunk(
   }
 )
 
-export const counterSlice = createSlice({
+export const todosSlice = createSlice({
   name: 'todos',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
@@ -31,8 +31,17 @@ export const counterSlice = createSlice({
       // immutable state based off those changes
       state.value = [...state.value, action.payload]
     },
-    decrement: (state) => {
-      state.value -= 1
+    remove: (state, action) => {
+      const newValue = state.value.map((todo) => {
+        return todo.id === action.payload
+      })
+
+      const slicer = newValue.indexOf(true)
+
+      state.value = [
+        ...state.value.slice(0, slicer),
+        ...state.value.slice(slicer + 1, state.value.length),
+      ]
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     incrementByAmount: (state, action) => {
@@ -53,7 +62,7 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { add, decrement, incrementByAmount } = counterSlice.actions
+export const { add, remove, incrementByAmount } = todosSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -63,4 +72,4 @@ export const selectTodos = (state) => state.todos.value
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.
 
-export default counterSlice.reducer
+export default todosSlice.reducer

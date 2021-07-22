@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   add,
-  increment,
+  remove,
   incrementByAmount,
   incrementAsync,
   incrementIfOdd,
@@ -32,31 +32,43 @@ export function Counter() {
   }
 
   const handleSend = () => {
+    // laas dos primeras veces no suma
     dispatch(add(todo))
+
+    console.log(todo)
 
     setTodo((prevState) => {
       return {
         ...prevState,
         important: false,
         name: '',
+        id: prevState.id + 1,
       }
     })
   }
 
+  const handleDelete = (id) => {
+    dispatch(remove(id))
+    console.log(id)
+  }
+
   return (
     <div>
-      <input type="text" onChange={handleChange} />
+      <input value={todo.name} type="text" onChange={handleChange} />
       <button onClick={handleSend}> add todo</button>
       <select onChange={handleImportance}>
         <option value="important">important</option>
         <option value="notimportant">not important</option>
       </select>
 
-      {todos.map((todo) => (
-        <div key={todo.id}>
-          {todo.name} {todo.important === true ? '❗️' : '😎'} {todo.id}
-        </div>
-      ))}
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            <i onClick={() => handleDelete(todo.id)}>x</i>
+            {todo.name} {todo.important === true ? '❗️' : '😎'}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
