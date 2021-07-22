@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import { fetchCount } from './counterAPI'
 
 const initialState = {
@@ -44,8 +44,10 @@ export const todosSlice = createSlice({
       ]
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
+    edit: (state, action) => {
+      let toEdit = state.value.find((todo) => todo.id === action.payload)
+      toEdit.isEditing = !toEdit.isEditing
+      state.value = [...state.value] //seria como toggleEdit mejor creo.
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -62,7 +64,7 @@ export const todosSlice = createSlice({
   },
 })
 
-export const { add, remove, incrementByAmount } = todosSlice.actions
+export const { add, remove, edit } = todosSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

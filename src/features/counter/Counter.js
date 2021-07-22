@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   add,
   remove,
-  incrementByAmount,
+  edit,
   incrementAsync,
   incrementIfOdd,
   selectTodos,
@@ -14,7 +14,14 @@ export function Counter() {
   const todos = useSelector(selectTodos)
   const dispatch = useDispatch()
 
-  const [todo, setTodo] = useState({ name: '', important: false, id: 1 })
+  const [todo, setTodo] = useState({
+    name: '',
+    important: false,
+    isEditing: false,
+    id: 1,
+  })
+
+  const [newContent, setNewContent] = useState('')
 
   const handleChange = (e) => {
     setTodo((prevState) => {
@@ -43,6 +50,7 @@ export function Counter() {
         important: false,
         name: '',
         id: prevState.id + 1,
+        isEditing: false,
       }
     })
   }
@@ -50,6 +58,10 @@ export function Counter() {
   const handleDelete = (id) => {
     dispatch(remove(id))
     console.log(id)
+  }
+
+  const handleEdit = (id) => {
+    dispatch(edit(id))
   }
 
   return (
@@ -64,8 +76,12 @@ export function Counter() {
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
-            <i onClick={() => handleDelete(todo.id)}>x</i>
+            <i className={styles.icon} onClick={() => handleDelete(todo.id)}>
+              x
+            </i>
             {todo.name} {todo.important === true ? '❗️' : '😎'}
+            <i onClick={() => handleEdit(todo.id)}>✍🏻</i>
+            {todo.isEditing && <input />}
           </li>
         ))}
       </ul>
