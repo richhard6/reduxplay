@@ -32,6 +32,7 @@ export const todosSlice = createSlice({
       state.value = [...state.value, action.payload]
     },
     remove: (state, action) => {
+      console.log(action.index)
       const newValue = state.value.map((todo) => {
         return todo.id === action.payload
       })
@@ -44,10 +45,29 @@ export const todosSlice = createSlice({
       ]
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    edit: (state, action) => {
-      let toEdit = state.value.find((todo) => todo.id === action.payload)
-      toEdit.isEditing = !toEdit.isEditing
-      state.value = [...state.value] //seria como toggleEdit mejor creo.
+    toggleEditing: (state, action) => {
+      const toEdit = state.value.map((todo) => {
+        if (todo.id !== action.payload) {
+          return todo
+        }
+        return { ...todo, isEditing: !todo.isEditing }
+      })
+
+      /* toEdit.isEditing = !toEdit.isEditing  */ // esta bien asi  mutandolo?
+      state.value = [...toEdit]
+    },
+
+    saveNewContent: (state, action) => {
+      const [id, newContent] = action.payload
+
+      const edited = state.value.map((todo) => {
+        if (todo.id !== id) {
+          return todo
+        }
+        return { ...todo, ...{ name: newContent, isEditing: false } }
+      })
+
+      state.value = [...edited]
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -64,7 +84,7 @@ export const todosSlice = createSlice({
   },
 })
 
-export const { add, remove, edit } = todosSlice.actions
+export const { add, remove, toggleEditing, saveNewContent } = todosSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

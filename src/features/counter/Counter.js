@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   add,
   remove,
-  edit,
-  incrementAsync,
+  toggleEditing,
+  saveNewContent,
   incrementIfOdd,
   selectTodos,
 } from './counterSlice'
@@ -21,7 +21,7 @@ export function Counter() {
     id: 1,
   })
 
-  const [newContent, setNewContent] = useState('')
+  const [newContent, setNewContent] = useState([])
 
   const handleChange = (e) => {
     setTodo((prevState) => {
@@ -60,8 +60,12 @@ export function Counter() {
     console.log(id)
   }
 
-  const handleEdit = (id) => {
-    dispatch(edit(id))
+  const toggleEdit = (id) => {
+    dispatch(toggleEditing(id))
+  }
+
+  const handleSaveNewContent = () => {
+    dispatch(saveNewContent(newContent))
   }
 
   return (
@@ -80,8 +84,19 @@ export function Counter() {
               x
             </i>
             {todo.name} {todo.important === true ? '❗️' : '😎'}
-            <i onClick={() => handleEdit(todo.id)}>✍🏻</i>
-            {todo.isEditing && <input />}
+            <i onClick={() => toggleEdit(todo.id)}>✍🏻</i>
+            {todo.isEditing && (
+              <>
+                <input
+                  onChange={(e) =>
+                    setNewContent(
+                      (prevState) => (prevState = [todo.id, e.target.value])
+                    )
+                  }
+                />
+                <button onClick={handleSaveNewContent}>save</button>
+              </>
+            )}
           </li>
         ))}
       </ul>
