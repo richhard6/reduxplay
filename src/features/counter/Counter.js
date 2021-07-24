@@ -30,6 +30,7 @@ export function Counter() {
   }
 
   const handleImportance = (e) => {
+    console.log(e)
     setTodo((prevState) => {
       return {
         ...prevState,
@@ -38,8 +39,8 @@ export function Counter() {
     })
   }
 
-  const handleSend = () => {
-    // laas dos primeras veces no suma
+  const handleSend = (e) => {
+    e.preventDefault()
     dispatch(add(todo))
 
     console.log(todo)
@@ -64,38 +65,53 @@ export function Counter() {
     dispatch(toggleEditing(id))
   }
 
-  const handleSaveNewContent = () => {
+  const handleSaveNewContent = (e) => {
+    e.preventDefault()
     dispatch(saveNewContent(newContent))
   }
 
-  return (
-    <div>
-      <input value={todo.name} type="text" onChange={handleChange} />
-      <button onClick={handleSend}> add todo</button>
-      <select onChange={handleImportance}>
-        <option value="important">important</option>
-        <option value="notimportant">not important</option>
-      </select>
+  //seria bueno hacer focus al abrir la edicion
 
-      <ul>
+  return (
+    <div className={styles.container}>
+      <form className={styles.input} onSubmit={handleSend}>
+        <input
+          placeholder="add todo"
+          value={todo.name}
+          type="text"
+          onChange={handleChange}
+        />
+        <button> add todo</button>
+        <select
+          onChange={handleImportance}
+          value={todo.important === false ? 'notimportant' : 'important'}
+        >
+          <option value="important">important</option>
+          <option value="notimportant">not important</option>
+        </select>
+      </form>
+
+      <ul className={styles.list}>
         {todos.map((todo) => (
-          <li key={todo.id}>
-            <i className={styles.icon} onClick={() => handleDelete(todo.id)}>
-              x
-            </i>
+          <li
+            className={todo.important === true ? styles.important : null}
+            key={todo.id}
+          >
+            {todo.isEditing && (
+              <i className={styles.icon} onClick={() => handleDelete(todo.id)}>
+                x
+              </i>
+            )}
             {todo.name} {todo.important === true ? '❗️' : '😎'}
             <i onClick={() => toggleEdit(todo.id)}>✍🏻</i>
             {todo.isEditing && (
-              <>
+              <form onSubmit={handleSaveNewContent}>
                 <input
-                  onChange={(e) =>
-                    setNewContent(
-                      (prevState) => (prevState = [todo.id, e.target.value])
-                    )
-                  }
+                  placeholder="update todo"
+                  onChange={(e) => setNewContent([todo.id, e.target.value])}
                 />
-                <button onClick={handleSaveNewContent}>save</button>
-              </>
+                <button>save</button>
+              </form>
             )}
           </li>
         ))}

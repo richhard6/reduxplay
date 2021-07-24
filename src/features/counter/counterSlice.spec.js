@@ -1,33 +1,27 @@
-import counterReducer, {
-  increment,
-  decrement,
-  incrementByAmount,
-} from './counterSlice';
+import todosReducer, { add, remove, incrementByAmount } from './counterSlice'
 
-describe('counter reducer', () => {
+describe('Todos reducer', () => {
   const initialState = {
-    value: 3,
-    status: 'idle',
-  };
+    value: [],
+  }
   it('should handle initial state', () => {
-    expect(counterReducer(undefined, { type: 'unknown' })).toEqual({
-      value: 0,
-      status: 'idle',
-    });
-  });
+    expect(todosReducer(undefined, { type: 'unknown' })).toEqual({
+      value: [],
+    })
+  })
 
   it('should handle increment', () => {
-    const actual = counterReducer(initialState, increment());
-    expect(actual.value).toEqual(4);
-  });
+    const actual = todosReducer(initialState, add())
+    expect(actual.value).toEqual(4)
+  })
 
   it('should handle decrement', () => {
-    const actual = counterReducer(initialState, decrement());
-    expect(actual.value).toEqual(2);
-  });
+    const actual = todosReducer(initialState, remove())
+    expect(actual.value).toEqual(2)
+  })
 
   it('should handle incrementByAmount', () => {
-    const actual = counterReducer(initialState, incrementByAmount(2));
-    expect(actual.value).toEqual(5);
-  });
-});
+    const actual = todosReducer(initialState, incrementByAmount(2))
+    expect(actual.value).toEqual(5)
+  })
+})
