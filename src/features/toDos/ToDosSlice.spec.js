@@ -6,6 +6,9 @@ import todosReducer, {
   changeImportance,
 } from './ToDosSlice'
 
+//value : { Shopping: [{Todo1},{Todo2},{...}], Webpage: [{Todo1},{Todo2},{...}], .... }  un object
+//el psy kongroo...
+
 describe('Todos reducer', () => {
   const initialState = {
     value: [],
