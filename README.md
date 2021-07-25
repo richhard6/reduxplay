@@ -42,3 +42,5 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## I'm working on this project, is about To Do app with different lists, you can add a list with a name and inside create to dos. Later on you would be able to add someone to the list and work together. Currently BUILDING . . . 
