@@ -61,6 +61,7 @@ export const todosSlice = createSlice({
       const [id, newContent] = action.payload
 
       const withNewContent = state.value.map((todo) => {
+        // restriccion de los que no esten siendo editados.
         if (todo.id !== id) {
           return todo
         }
