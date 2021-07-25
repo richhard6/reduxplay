@@ -1,15 +1,16 @@
 import { useSelector } from 'react-redux'
-import { selectTodos } from '../../features/counter/counterSlice'
+import { selectTodos } from '../../features/toDos/toDosSlice'
+import { List } from './TodoListStyle'
 import Todo from '../Todo/Todo'
 
-function TodoList({ styles }) {
+function TodoList() {
   const todos = useSelector(selectTodos)
   return (
-    <ul className={styles.list}>
+    <List>
       {todos.map((todo) => (
-        <Todo todo={todo} styles={styles} />
+        <Todo key={todo.id} todo={todo} />
       ))}
-    </ul>
+    </List>
   )
 }
 

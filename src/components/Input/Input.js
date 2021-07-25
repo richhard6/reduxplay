@@ -1,21 +1,24 @@
+import { Input as InputHTML, Button } from '../Todo/TodoStyle'
+import { Form, Select } from './InputStyle'
+
 function Input({ handleChange, handleImportance, handleSend, todo }) {
   return (
-    <form onSubmit={handleSend}>
-      <input
+    <Form onSubmit={handleSend}>
+      <InputHTML
         placeholder="add todo"
         value={todo.name}
         type="text"
         onChange={handleChange}
       />
-      <button> add todo</button>
-      <select
+      <Button> add</Button>
+      <Select
         onChange={handleImportance}
         value={todo.important === false ? 'notimportant' : 'important'}
       >
         <option value="important">important</option>
         <option value="notimportant">not important</option>
-      </select>
-    </form>
+      </Select>
+    </Form>
   )
 }
 

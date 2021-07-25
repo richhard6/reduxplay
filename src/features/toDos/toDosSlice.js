@@ -60,14 +60,23 @@ export const todosSlice = createSlice({
     saveNewContent: (state, action) => {
       const [id, newContent] = action.payload
 
-      const edited = state.value.map((todo) => {
+      const withNewContent = state.value.map((todo) => {
         if (todo.id !== id) {
           return todo
         }
         return { ...todo, ...{ name: newContent, isEditing: false } }
       })
 
-      state.value = [...edited]
+      state.value = [...withNewContent]
+    },
+
+    changeImportance: (state, action) => {
+      const importanceChanged = state.value.map((todo) => {
+        if (todo.id !== action.payload) return todo
+        return { ...todo, important: !todo.important }
+      })
+
+      state.value = [...importanceChanged]
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -84,7 +93,8 @@ export const todosSlice = createSlice({
   },
 })
 
-export const { add, remove, toggleEditing, saveNewContent } = todosSlice.actions
+export const { add, remove, toggleEditing, saveNewContent, changeImportance } =
+  todosSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

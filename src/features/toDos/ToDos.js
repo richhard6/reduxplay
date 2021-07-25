@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { add } from './counterSlice'
+import { add } from './toDosSlice.js'
 import Input from '../../components/Input/Input'
 import TodoList from '../../components/TodoList/TodoList'
 
-import styles from './Counter.module.css'
+import { Container } from './ToDosStyles'
 
-export function Counter() {
+export function ToDos() {
   const dispatch = useDispatch()
 
   const [todo, setTodo] = useState({
@@ -52,7 +52,7 @@ export function Counter() {
   //seria bueno hacer focus al abrir la edicion
 
   return (
-    <div className={styles.container}>
+    <Container>
       <Input
         handleChange={handleChange}
         handleImportance={handleImportance}
@@ -60,7 +60,7 @@ export function Counter() {
         todo={todo}
       />
 
-      <TodoList styles={styles} />
-    </div>
+      <TodoList />
+    </Container>
   )
 }

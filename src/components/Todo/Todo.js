@@ -2,20 +2,22 @@ import {
   remove,
   toggleEditing,
   saveNewContent,
-} from '../../features/counter/counterSlice'
+  changeImportance,
+} from '../../features/toDos/toDosSlice'
+
+import { ListItem, Icon, Wrapper, Input, Button } from './TodoStyle'
 
 import { useDispatch } from 'react-redux'
 
 import { useState } from 'react'
 
-function Todo({ todo, styles }) {
+function Todo({ todo }) {
   const [newContent, setNewContent] = useState([])
 
   const dispatch = useDispatch()
 
   const handleDelete = (id) => {
     dispatch(remove(id))
-    console.log(id)
   }
 
   const toggleEdit = (id) => {
@@ -27,28 +29,45 @@ function Todo({ todo, styles }) {
     dispatch(saveNewContent(newContent))
   }
 
+  const handleChangeImportance = (id) => {
+    dispatch(changeImportance(id))
+  }
+
   return (
-    <li
-      className={todo.important === true ? styles.important : null}
-      key={todo.id}
-    >
-      {todo.isEditing && (
-        <i className={styles.icon} onClick={() => handleDelete(todo.id)}>
-          x
-        </i>
-      )}
-      {todo.name} {todo.important === true ? '❗️' : '😎'}
-      <i onClick={() => toggleEdit(todo.id)}>✍🏻</i>
+    <ListItem importance={todo.important}>
+      <Wrapper>
+        <Wrapper>
+          {todo.isEditing && (
+            <Icon
+              delete
+              isEditing={todo.isEditing}
+              onClick={() => handleDelete(todo.id)}
+            >
+              ❌
+            </Icon>
+          )}
+          <Icon
+            isEditing={todo.isEditing}
+            onClick={() => todo.isEditing && handleChangeImportance(todo.id)}
+          >
+            {todo.important === true ? '❗️' : '😎'}{' '}
+          </Icon>
+        </Wrapper>
+        {todo.name}{' '}
+        <Icon isEditing={true} onClick={() => toggleEdit(todo.id)}>
+          ✍🏻
+        </Icon>
+      </Wrapper>
       {todo.isEditing && (
         <form onSubmit={handleSaveNewContent}>
-          <input
-            placeholder="update todo"
+          <Input
+            placeholder="update todo or change importance clicking @icon"
             onChange={(e) => setNewContent([todo.id, e.target.value])}
           />
-          <button>save</button>
+          <Button>save</Button>
         </form>
       )}
-    </li>
+    </ListItem>
   )
 }
 

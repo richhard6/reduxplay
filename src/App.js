@@ -1,12 +1,14 @@
 import React from 'react'
-import logo from './logo.svg'
-import { Counter } from './features/counter/Counter'
+
+import { ToDos } from './features/toDos/ToDos'
+import Sidebar from './components/Sidebar/Sidebar'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
-      <Counter />
+      <ToDos />
+      <Sidebar />
     </div>
   )
 }
